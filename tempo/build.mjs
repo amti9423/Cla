@@ -25,7 +25,7 @@ const html = `<!doctype html>
 <meta name="apple-mobile-web-app-title" content="Tempo">
 <meta name="theme-color" content="#0D0B14">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" type="image/png" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 ${headBits}
 <style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
 </head>

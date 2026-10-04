@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="Tempo">
 <meta name="theme-color" content="#0D0B14">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" type="image/png" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <title>Tempo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,8 +107,6 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   background:radial-gradient(closest-side,var(--p2),transparent);animation:drift2 41s ease-in-out infinite alternate}
 .ambient .b3{width:70vmax;height:70vmax;left:30%;top:28%;opacity:.55;
   background:radial-gradient(closest-side,var(--deep),transparent);animation:drift3 47s ease-in-out infinite alternate}
-.ambient::after{content:"";position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 @keyframes drift1{to{transform:translate(12vmax,9vmax) scale(1.08)}}
 @keyframes drift2{to{transform:translate(-10vmax,-12vmax) scale(1.12)}}
 @keyframes drift3{to{transform:translate(-14vmax,6vmax) scale(.9)}}
@@ -163,12 +161,16 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .ring .track{fill:none;stroke:var(--track);stroke-width:14}
 .ring .arc{fill:none;stroke:url(#arcGrad);stroke-width:14;stroke-linecap:round;stroke-dasharray:892.2;
-  transform:rotate(-90deg);transform-origin:160px 160px;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--p1) 70%,transparent))}
+  transform:rotate(-90deg);transform-origin:160px 160px}
+/* Poświata łuku to szersza, półprzezroczysta kopia — filtry SVG Safari rysuje w niskiej rozdzielczości. */
+.ring .arc-glow{fill:none;stroke:url(#arcGrad);stroke-width:22;stroke-linecap:round;stroke-dasharray:892.2;opacity:.1;
+  transform:rotate(-90deg);transform-origin:160px 160px}
 .ring .s1{stop-color:var(--p1)} .ring .s2{stop-color:var(--p2)}
 .ring .tick{stroke:var(--ink);stroke-width:1.4;stroke-linecap:round;opacity:.14;transition:opacity .4s}
 .ring .tick.major{stroke-width:2.2}
 .ring .tick.on{opacity:.5}
-.ring .knob{fill:var(--knob);filter:drop-shadow(0 0 6px var(--p1))}
+.ring .knob{fill:var(--knob)}
+.ring .knob-halo{fill:var(--p1);opacity:.35}
 .ring .knob-g{transform-origin:160px 160px}
 .face{position:absolute;inset:17%;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center}
 .face .lab{color:var(--ink-2);font-size:max(9.5px,3.1cqi)}
@@ -257,6 +259,18 @@ dialog.sheet::backdrop{background:var(--scrim);-webkit-backdrop-filter:blur(5px)
 .switch:checked::after{transform:translateX(20px)}
 
 .range{width:140px;max-width:42vw;accent-color:var(--p1)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:88px;padding:12px 6px;border-radius:20px;
+  background:var(--well);border:1px solid var(--line-2);font-size:13px;font-weight:600;color:var(--ink-2);text-align:center;
+  transition:transform .35s var(--spring),background .3s,color .3s,border-color .3s}
+.tile:active{transform:scale(.95)}
+.tile svg.i{width:26px;height:26px;color:var(--ink-2)}
+.tile[aria-pressed="true"]{color:var(--on-accent);border-color:transparent;
+  background:linear-gradient(150deg,color-mix(in srgb,var(--p1) 88%,white),var(--p2));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 8px 24px -8px color-mix(in srgb,var(--p1) 80%,transparent)}
+.tile[aria-pressed="true"] svg.i{color:var(--on-accent)}
+.tile.sel{border-color:color-mix(in srgb,var(--p1) 70%,transparent);color:var(--ink)}
+.tile small{display:block;font-size:11px;font-weight:500;opacity:.75}
 .mini-seg{display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--fill);flex:0 0 auto}
 .mini-seg button{min-height:32px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-2);transition:background .25s,color .25s}
 .mini-seg button[aria-pressed="true"]{color:var(--ink);background:linear-gradient(160deg,var(--thumb-top),var(--thumb-bot));box-shadow:inset 0 1px 0 var(--thumb-hi),0 2px 8px var(--shade)}
@@ -369,7 +383,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   <header class="top">
     <div class="brand">Tempo<i aria-hidden="true"></i></div>
     <div class="top-actions">
-      <button type="button" class="icon-btn glass" id="btnNoise" aria-pressed="false" aria-label="Szum brązowy" title="Szum brązowy">
+      <button type="button" class="icon-btn glass" id="btnNoise" aria-pressed="false" aria-label="Dźwięki" title="Dźwięki">
         <svg class="i" viewBox="0 0 24 24"><path d="M2.5 12h2.2l2.1-5 3 10.5 3-15 3 13 2-3.5h3.7"/></svg>
       </button>
       <button type="button" class="icon-btn glass" id="btnStats" aria-label="Statystyki" title="Statystyki">
@@ -399,8 +413,9 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
         </defs>
         <g id="ticks"></g>
         <circle class="track" cx="160" cy="160" r="142"/>
+        <circle class="arc-glow" id="arcGlow" cx="160" cy="160" r="142"/>
         <circle class="arc" id="arc" cx="160" cy="160" r="142"/>
-        <g class="knob-g" id="knob"><circle class="knob" cx="160" cy="18" r="5"/></g>
+        <g class="knob-g" id="knob"><circle class="knob-halo" cx="160" cy="18" r="10"/><circle class="knob" cx="160" cy="18" r="5"/></g>
       </svg>
       <div class="face glass">
         <span class="lab" id="phaseLab">Skupienie</span>
@@ -524,10 +539,8 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
     <div class="group">
       <span class="lab">Dźwięk i ekran</span>
       <div class="list">
-        <label class="row" for="sSound"><span><b>Dzwonek na koniec fazy</b><small>gra też w trybie cichym (iOS 17+)</small></span><input type="checkbox" class="switch" id="sSound"></label>
-        <div class="row"><span><b>Sprawdź dzwonek</b><small>jeśli nic nie słychać, podgłośnij przyciskami z boku</small></span><button type="button" class="btn soft" id="btnTest" style="min-height:38px;font-size:14px">Zagraj</button></div>
+        <div class="row"><span><b>Dźwięki</b><small>tło do skupienia i dzwonek na koniec</small></span><button type="button" class="btn soft" id="btnOpenSound" style="min-height:38px;font-size:14px">Otwórz</button></div>
         <label class="row" for="sWake"><span><b>Ekran nie gaśnie</b><small>w trakcie sesji, żeby dzwonek zawsze zagrał</small></span><input type="checkbox" class="switch" id="sWake"></label>
-        <label class="row" for="sNoise"><span><b>Głośność szumu</b><small>szum brązowy, przycisk z falą u góry</small></span><input type="range" class="range" id="sNoise" min="0" max="1" step="0.05"></label>
       </div>
     </div>
 
@@ -536,6 +549,42 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
       <div class="list">
         <p class="note">Otwórz Tempo w Safari, stuknij <b>Udostępnij</b>, potem <b>Do ekranu początkowego</b>. Tempo zamieszka obok innych aplikacji, tak jak Mise.</p>
         <p class="note sync" id="syncNote" data-state="local">Zapisane na tym urządzeniu</p>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- dźwięki -->
+<dialog class="sheet" id="dlgSound" aria-labelledby="soundTitle">
+  <div class="sheet-in">
+    <div class="grabber" aria-hidden="true"></div>
+    <div class="sheet-head"><h2 id="soundTitle">Dźwięki</h2>
+      <button type="button" class="x" data-close aria-label="Zamknij"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="group">
+      <span class="lab">Tło do skupienia</span>
+      <div class="tiles" id="ambTiles">
+        <button type="button" class="tile" data-amb="brown" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12h2.2l2.1-5 3 10.5 3-15 3 13 2-3.5h3.7"/></svg>Szum brązowy</button>
+        <button type="button" class="tile" data-amb="pink" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 9.5c2.4 0 2.4-3 4.8-3s2.4 3 4.7 3 2.4-3 4.8-3 2.3 3 4.7 3M2.5 17.5c2.4 0 2.4-3 4.8-3s2.4 3 4.7 3 2.4-3 4.8-3 2.3 3 4.7 3"/></svg>Szum różowy</button>
+        <button type="button" class="tile" data-amb="rain" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M7 14.5a4 4 0 0 1 .4-8 5 5 0 0 1 9.4 1.6 3.3 3.3 0 0 1-.3 6.4z"/><path d="M8.5 18l-1 2.5M12.5 18l-1 2.5M16.5 18l-1 2.5"/></svg>Deszcz</button>
+        <button type="button" class="tile" data-amb="waves" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 8.5c2.4 0 2.4-2.5 4.8-2.5s2.4 2.5 4.7 2.5 2.4-2.5 4.8-2.5 2.3 2.5 4.7 2.5M2.5 13.5c2.4 0 2.4-2.5 4.8-2.5s2.4 2.5 4.7 2.5 2.4-2.5 4.8-2.5 2.3 2.5 4.7 2.5M2.5 18.5c2.4 0 2.4-2.5 4.8-2.5s2.4 2.5 4.7 2.5 2.4-2.5 4.8-2.5 2.3 2.5 4.7 2.5"/></svg>Fale</button>
+        <button type="button" class="tile" data-amb="fire" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M12 3c.6 3.2 5.2 5.4 5.2 10.3a5.2 5.2 0 0 1-10.4 0c0-2.6 1.4-4.2 2.6-5.2.2 1.7.9 2.7 2 3.2-.4-3 .1-5.6.6-8.3z"/></svg>Kominek</button>
+        <button type="button" class="tile" data-amb="tick" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12.5" r="8"/><path d="M12 8.5v4l2.8 1.8M10 2.5h4"/></svg>Tykanie</button>
+      </div>
+      <div class="list"><label class="row" for="sNoise"><span><b>Głośność tła</b></span><input type="range" class="range" id="sNoise" min="0" max="1" step="0.05"></label></div>
+    </div>
+    <div class="group">
+      <span class="lab">Dzwonek na koniec fazy</span>
+      <div class="tiles" id="chimeTiles">
+        <button type="button" class="tile" data-chime="misa"><span>Misa<small>miękki, ciepły</small></span></button>
+        <button type="button" class="tile" data-chime="marimba"><span>Marimba<small>drewniany</small></span></button>
+        <button type="button" class="tile" data-chime="dzwoneczki"><span>Dzwoneczki<small>jak na wietrze</small></span></button>
+        <button type="button" class="tile" data-chime="gong"><span>Gong<small>głęboki, długi</small></span></button>
+        <button type="button" class="tile" data-chime="minutnik"><span>Minutnik<small>wyraźne pikanie</small></span></button>
+        <button type="button" class="tile" data-chime="cisza"><span>Cisza<small>tylko poświata</small></span></button>
+      </div>
+      <div class="list">
+        <label class="row" for="sChimeVol"><span><b>Głośność dzwonka</b></span><input type="range" class="range" id="sChimeVol" min="0.1" max="1" step="0.05"></label>
+        <p class="note">Stuknij tło, by je włączyć albo wyłączyć, a dzwonek, by go posłuchać i wybrać. Dźwięki grają też w trybie cichym (iOS 17+). Jeśli nic nie słychać, podgłośnij przyciskami z boku telefonu.</p>
       </div>
     </div>
   </div>
@@ -568,7 +617,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   const MODES = { focus: "Skupienie", short: "Przerwa", long: "Długa przerwa" };
   const DOW = ["nd", "pn", "wt", "śr", "cz", "pt", "sb"];
   const DEFAULTS = { focus: 25, short: 5, long: 15, every: 4, goal: 8, autoBreak: false, autoFocus: false,
-                     sound: true, wake: true, noiseVol: 0.5, theme: "auto", updatedAt: 0 };
+                     sound: true, chime: "misa", chimeVol: 0.8, ambient: "brown", wake: true, noiseVol: 0.5, theme: "auto", updatedAt: 0 };
   const PRESETS = { classic: { focus: 25, short: 5, long: 15 }, deep: { focus: 50, short: 10, long: 30 }, gentle: { focus: 15, short: 3, long: 10 } };
   // [min, max, krok]
   const LIMITS = { focus: [5, 90, 5], short: [1, 30, 1], long: [5, 45, 5], every: [2, 8, 1], goal: [1, 16, 1] };
@@ -628,7 +677,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
      iOS odblokowuje dźwięk dopiero po geście — robimy to przy Start i każdym stuknięciu.
      Domyślnie Safari traktuje Web Audio jak dźwięk tła, który wycisza przełącznik
      trybu cichego. Kategoria „playback” (iOS 17+) sprawia, że dzwonek gra jak w aplikacji. */
-  let AC = null, master = null, noiseSrc = null, noiseGain = null, noiseOn = false;
+  let AC = null, master = null, chimeBus = null;
   function playbackSession() {
     try { if (navigator.audioSession && navigator.audioSession.type !== "playback") navigator.audioSession.type = "playback"; } catch (_) {}
   }
@@ -637,7 +686,10 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
       const C = window.AudioContext || window.webkitAudioContext;
       if (!C) return null;
       playbackSession();
-      try { AC = new C(); master = AC.createGain(); master.gain.value = 0.9; master.connect(AC.destination); }
+      try {
+        AC = new C(); master = AC.createGain(); master.gain.value = 0.9; master.connect(AC.destination);
+        chimeBus = AC.createGain(); chimeBus.gain.value = settings.chimeVol; chimeBus.connect(master);
+      }
       catch (_) { AC = null; return null; }
     }
     // iOS zostawia kontekst w stanie „interrupted” po zablokowaniu ekranu albo telefonie — budzimy każdy stan poza „running”.
@@ -652,53 +704,163 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   // Każdy gest użytkownika to okazja, żeby obudzić uśpiony dźwięk przed końcem fazy.
   const wakeAudio = () => { if (AC && AC.state !== "running") { playbackSession(); AC.resume().catch(() => {}); } };
   ["pointerdown", "touchend", "keydown"].forEach(ev => document.addEventListener(ev, wakeAudio, { passive: true, capture: true }));
-  // Miękki dzwonek: ton podstawowy plus dwa niecałkowite alikwoty, jak w małej misie.
-  function bell(a, f, t, vol) {
-    [[1, vol, 2.2], [2.76, vol * 0.16, 0.9], [5.4, vol * 0.05, 0.5]].forEach(([m, v, len]) => {
-      const o = a.createOscillator(), g = a.createGain();
-      o.type = "sine"; o.frequency.value = f * m;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(v, t + 0.015);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + len);
-      o.connect(g); g.connect(master); o.start(t); o.stop(t + len + 0.1);
-    });
+  // Jeden ton z miękkim atakiem i wykładniczym wybrzmieniem.
+  function tone(a, f, t, vol, len, type, dest) {
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = type || "sine"; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(Math.max(vol, 0.0002), t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+    o.connect(g); g.connect(dest); o.start(t); o.stop(t + len + 0.05);
+    return o;
   }
-  function chime(from) {
+  /* Dzwonki. up = koniec skupienia (melodia w górę), inaczej w dół — słychać, co teraz. */
+  const CHIMES = {
+    misa(a, t, up, d) {      // ton podstawowy i niecałkowite alikwoty, jak w małej misie
+      (up ? [784, 988, 1319] : [1319, 988, 784]).forEach((f, i) => {
+        const s = t + i * 0.24;
+        tone(a, f, s, 0.22, 2.2, "sine", d); tone(a, f * 2.76, s, 0.035, 0.9, "sine", d); tone(a, f * 5.4, s, 0.011, 0.5, "sine", d);
+      });
+    },
+    marimba(a, t, up, d) {   // krótkie wybrzmienie i alikwot 4×, jak drewniana sztabka
+      (up ? [523.25, 659.25, 783.99, 1046.5] : [1046.5, 783.99, 659.25, 523.25]).forEach((f, i) => {
+        const s = t + i * 0.15;
+        tone(a, f, s, 0.32, 0.75, "sine", d); tone(a, f * 4, s, 0.07, 0.16, "sine", d); tone(a, f * 9.2, s, 0.015, 0.05, "sine", d);
+      });
+    },
+    dzwoneczki(a, t, up, d) { // losowe nuty skali pentatonicznej, jak dzwonki wietrzne
+      const pent = up ? [1568, 1760, 2093, 2349, 2637, 3136] : [1175, 1319, 1568, 1760, 2093, 2349];
+      let s = t;
+      for (let i = 0; i < 8; i++) {
+        const f = pent[Math.floor(Math.random() * pent.length)];
+        tone(a, f, s, 0.085, 1.8, "sine", d); tone(a, f * 2.76, s, 0.014, 0.5, "sine", d);
+        s += 0.1 + Math.random() * 0.22;
+      }
+    },
+    gong(a, t, up, d) {      // nieharmoniczne alikwoty z lekkim opadaniem wysokości
+      const base = up ? 196 : 174.6;
+      [[1, 0.34, 4.8], [1.48, 0.13, 3.4], [2.1, 0.08, 2.5], [2.74, 0.05, 1.8], [3.6, 0.025, 1.2]].forEach(([m, v, len]) => {
+        const o = tone(a, base * m, t, v, len, "sine", d);
+        o.frequency.setValueAtTime(base * m * 1.012, t); o.frequency.exponentialRampToValueAtTime(base * m, t + 1.4);
+      });
+    },
+    minutnik(a, t, up, d) {  // trzy podwójne piknięcia, zmiękczone filtrem
+      const lp = a.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 2800; lp.connect(d);
+      const f = up ? 1046.5 : 880;
+      for (let r = 0; r < 3; r++) for (let k = 0; k < 2; k++) tone(a, f, t + r * 0.6 + k * 0.15, 0.2, 0.11, "triangle", lp);
+    },
+    cisza() {}
+  };
+  function chime(from, id) {
     const a = ctx(); if (!a) return;
-    const seq = from === "focus" ? [784, 988, 1319] : [1319, 988, 784];   // w górę = przerwa, w dół = do pracy
-    const play = () => { const t0 = a.currentTime + 0.05; seq.forEach((f, i) => bell(a, f, t0 + i * 0.24, 0.22)); };
+    const fn = CHIMES[id || settings.chime] || CHIMES.misa;
+    chimeBus.gain.setValueAtTime(settings.chimeVol, a.currentTime);
+    const play = () => fn(a, a.currentTime + 0.05, from === "focus", chimeBus);
     // Uśpiony kontekst ma zamrożony zegar: najpierw go budzimy, dopiero potem planujemy dźwięk.
     if (a.state === "running") play(); else a.resume().then(play, play);
   }
-  // Szum brązowy z pętlą bez trzasku: koniec bufora przenika się z początkiem.
-  function brownBuffer(a) {
-    const sr = a.sampleRate, L = sr * 6, N = Math.floor(sr * 0.5), A = new Float32Array(L);
-    let last = 0;
-    for (let i = 0; i < L; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; A[i] = last * 3.5; }
-    const B = a.createBuffer(1, L - N, sr), d = B.getChannelData(0);
+
+  /* Tła do skupienia — syntezowane raz do bufora i zapętlone.
+     Koniec bufora przenika się z początkiem, więc pętla nie trzaska. */
+  function loopBuffer(a, A, N) {
+    const L = A.length, B = a.createBuffer(1, L - N, a.sampleRate), d = B.getChannelData(0);
     for (let i = 0; i < L - N; i++) d[i] = i < N ? A[i] * (i / N) + A[L - N + i] * (1 - i / N) : A[i];
     return B;
   }
-  function setNoise(on) {
+  function brownArr(L) { const A = new Float32Array(L); let last = 0; for (let i = 0; i < L; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; A[i] = last * 3.5; } return A; }
+  function pinkArr(L) {     // filtr Paula Kelleta
+    const A = new Float32Array(L); let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (let i = 0; i < L; i++) {
+      const w = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + w * 0.0555179; b1 = 0.99332 * b1 + w * 0.0750759; b2 = 0.969 * b2 + w * 0.153852;
+      b3 = 0.8665 * b3 + w * 0.3104856; b4 = 0.55 * b4 + w * 0.5329522; b5 = -0.7616 * b5 - w * 0.016898;
+      A[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11; b6 = w * 0.115926;
+    }
+    return A;
+  }
+  function burst(A, at, len, amp, color) {   // krótki, gasnący trzask szumu
+    let lp = 0;
+    for (let k = 0; k < len && at + k < A.length; k++) {
+      const w = Math.random() * 2 - 1; lp += (w - lp) * color;
+      A[at + k] += lp * amp * Math.exp(-5 * k / len);
+    }
+  }
+  const AMB = {
+    brown: { gain: 0.6, make(a) { const sr = a.sampleRate; return loopBuffer(a, brownArr(sr * 6), sr * 0.5 | 0); } },
+    pink:  { gain: 0.45, make(a) { const sr = a.sampleRate; return loopBuffer(a, pinkArr(sr * 6), sr * 0.5 | 0); } },
+    rain:  { gain: 0.75, make(a) {
+      const sr = a.sampleRate, L = sr * 8, A = pinkArr(L);
+      let hp = 0, prev = 0, lp = 0;                       // szum deszczu: bez dudnienia i bez syku
+      for (let i = 0; i < L; i++) { hp = 0.94 * (hp + A[i] - prev); prev = A[i]; lp += (hp - lp) * 0.45; A[i] = lp * 0.55; }
+      for (let n = 0; n < 8 * 70; n++) burst(A, Math.random() * L | 0, (0.002 + Math.random() * 0.01) * sr | 0, 0.05 + Math.pow(Math.random(), 3) * 0.5, 0.6);
+      return loopBuffer(a, A, sr * 0.5 | 0);
+    } },
+    waves: { gain: 0.8, make(a) {
+      const sr = a.sampleRate, L = sr * 24, B = brownArr(L), P = pinkArr(L), A = new Float32Array(L);
+      let lp = 0;
+      for (let i = 0; i < L; i++) {
+        const t = i / sr;
+        const w1 = Math.pow((Math.sin(2 * Math.PI * t / 12 - Math.PI / 2) + 1) / 2, 1.6);
+        const w2 = Math.pow((Math.sin(2 * Math.PI * t / 8) + 1) / 2, 2);
+        const env = 0.12 + 0.88 * (0.65 * w1 + 0.35 * w2);
+        lp += (B[i] * 0.8 + P[i] * 0.6 - lp) * (0.03 + 0.3 * env);   // fala narasta i jaśnieje
+        A[i] = lp * env * 1.6;
+      }
+      return loopBuffer(a, A, sr | 0);
+    } },
+    fire:  { gain: 0.85, make(a) {
+      const sr = a.sampleRate, L = sr * 10, B = brownArr(L), P = pinkArr(L), A = new Float32Array(L);
+      for (let i = 0; i < L; i++) A[i] = B[i] * 0.35 + P[i] * 0.04;
+      for (let n = 0; n < 10 * 26; n++) {                  // trzaski, czasem całymi seriami
+        let at = Math.random() * L | 0;
+        const series = Math.random() < 0.25 ? 3 + (Math.random() * 5 | 0) : 1;
+        for (let k = 0; k < series; k++) { burst(A, at, (0.0006 + Math.random() * 0.0025) * sr | 0, 0.15 + Math.pow(Math.random(), 2) * 0.9, 0.85); at += (0.01 + Math.random() * 0.05) * sr | 0; }
+      }
+      return loopBuffer(a, A, sr * 0.5 | 0);
+    } },
+    tick:  { gain: 0.5, make(a) {                       // „tik” i „tak” co sekundę
+      const sr = a.sampleRate, L = sr * 2, A = new Float32Array(L);
+      [[0, 2600], [sr, 2050]].forEach(([at, f]) => {
+        burst(A, at, 0.004 * sr | 0, 0.6, 0.9);
+        for (let k = 0; k < 0.03 * sr; k++) { const t = k / sr; A[at + k] += Math.sin(2 * Math.PI * f * t) * 0.35 * Math.exp(-t * 180) + Math.sin(2 * Math.PI * 760 * t) * 0.25 * Math.exp(-t * 120); }
+      });
+      const B = a.createBuffer(1, L, sr); B.getChannelData(0).set(A); return B;
+    } }
+  };
+  const AMB_NAMES = { brown: "Szum brązowy", pink: "Szum różowy", rain: "Deszcz", waves: "Fale", fire: "Kominek", tick: "Tykanie" };
+  const bufs = {};
+  let amb = null;                                         // { id, src, gain }
+  const ambLevel = id => Math.max(0.0001, settings.noiseVol * AMB[id].gain);
+  function stopAmbient() {
+    if (!amb || !AC) { amb = null; return; }
+    const { src, gain } = amb;
+    gain.gain.cancelScheduledValues(AC.currentTime); gain.gain.setTargetAtTime(0.0001, AC.currentTime, 0.25);
+    setTimeout(() => { try { src.stop(); } catch (_) {} }, 1500);
+    amb = null;
+  }
+  function playAmbient(id) {
     const a = ctx();
     if (!a) { toast("Ta przeglądarka nie odtwarza dźwięku."); return; }
-    if (on) {
-      if (!noiseSrc) {
-        noiseGain = a.createGain(); noiseGain.gain.value = 0.0001; noiseGain.connect(master);
-        noiseSrc = a.createBufferSource(); noiseSrc.buffer = brownBuffer(a); noiseSrc.loop = true;
-        noiseSrc.connect(noiseGain); noiseSrc.start();
-      }
-      noiseGain.gain.cancelScheduledValues(a.currentTime);
-      noiseGain.gain.setTargetAtTime(Math.max(0.0001, settings.noiseVol * 0.6), a.currentTime, 0.4);
-    } else if (noiseSrc) {
-      const s = noiseSrc, g = noiseGain;
-      g.gain.cancelScheduledValues(a.currentTime);
-      g.gain.setTargetAtTime(0.0001, a.currentTime, 0.25);
-      noiseSrc = null; noiseGain = null;
-      setTimeout(() => { try { s.stop(); } catch (_) {} }, 1500);
-    }
-    noiseOn = on;
-    $("#btnNoise").setAttribute("aria-pressed", String(on));
+    stopAmbient();
+    const buf = bufs[id] || (bufs[id] = AMB[id].make(a));
+    const gain = a.createGain(); gain.gain.value = 0.0001; gain.connect(master);
+    const src = a.createBufferSource(); src.buffer = buf; src.loop = true; src.connect(gain); src.start();
+    gain.gain.setTargetAtTime(ambLevel(id), a.currentTime, 0.4);
+    amb = { id, src, gain };
+  }
+  function toggleAmbient(id) {
+    unlockAudio();
+    if (amb && amb.id === id) stopAmbient(); else playAmbient(id);
+    if (settings.ambient !== id) { settings.ambient = id; settingsChanged(true); }
+    renderSound();
+  }
+  function setAmbVolume() { if (amb && AC) amb.gain.gain.setTargetAtTime(ambLevel(amb.id), AC.currentTime, 0.1); }
+  function renderSound() {
+    $("#btnNoise").setAttribute("aria-pressed", String(!!amb));
+    $$("#ambTiles [data-amb]").forEach(b => b.setAttribute("aria-pressed", String(!!amb && amb.id === b.dataset.amb)));
+    $$("#chimeTiles [data-chime]").forEach(b => b.classList.toggle("sel", b.dataset.chime === settings.chime));
+    $("#sNoise").value = String(settings.noiseVol);
+    $("#sChimeVol").value = String(settings.chimeVol);
   }
 
   /* ─────────────── EKRAN NIE GAŚNIE ─────────────── */
@@ -981,7 +1143,8 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   function tick() {
     check();
     const ms = remaining(), frac = T.dur ? Math.min(1, ms / T.dur) : 0;
-    $("#arc").style.strokeDashoffset = String(ARC * (1 - frac));
+    const off = String(ARC * (1 - frac));
+    $("#arc").style.strokeDashoffset = off; $("#arcGlow").style.strokeDashoffset = off;
     $("#knob").style.transform = `rotate(${frac * 360}deg)`;
     const step = Math.floor(frac * 400);
     if (step !== lastFracStep) {
@@ -1102,9 +1265,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
     });
     $("#sAutoBreak").checked = !!settings.autoBreak;
     $("#sAutoFocus").checked = !!settings.autoFocus;
-    $("#sSound").checked = !!settings.sound;
     $("#sWake").checked = !!settings.wake;
-    $("#sNoise").value = String(settings.noiseVol);
     $$("#themeSeg [data-theme-opt]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themeOpt === (settings.theme || "auto"))));
   }
 
@@ -1114,10 +1275,10 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
     // Bezczynny licznik od razu przyjmuje nowy czas; trwająca sesja zostaje nietknięta.
     if (T.status === "idle" && !T.starter && T.dur !== durOf(T.mode)) { T.dur = T.left = durOf(T.mode); saveTimer(); }
     if (T.round > settings.every) { T.round = settings.every; saveTimer(); }
-    if (noiseOn && noiseGain && AC) noiseGain.gain.setTargetAtTime(Math.max(0.0001, settings.noiseVol * 0.6), AC.currentTime, 0.2);
+    setAmbVolume();
     if (!settings.wake) awake(false); else if (T.status === "running") awake(true);
     applyLook();
-    render(); renderSettings(); renderToday(); renderStats();
+    render(); renderSettings(); renderToday(); renderStats(); renderSound();
   }
   function step(key, dir) {
     const [lo, hi, st] = LIMITS[key];
@@ -1156,7 +1317,17 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   $("#btnPlus").addEventListener("click", plus5);
   $("#btnStarter").addEventListener("click", startStarter);
   $$(".seg [data-mode]").forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
-  $("#btnNoise").addEventListener("click", () => setNoise(!noiseOn));
+  $("#btnNoise").addEventListener("click", () => { renderSound(); openSheet("#dlgSound"); });
+  $("#btnOpenSound").addEventListener("click", () => { $("#dlgSettings").close(); renderSound(); openSheet("#dlgSound"); });
+  $$("#ambTiles [data-amb]").forEach(b => b.addEventListener("click", () => toggleAmbient(b.dataset.amb)));
+  $$("#chimeTiles [data-chime]").forEach(b => b.addEventListener("click", () => {
+    unlockAudio();
+    settings.chime = b.dataset.chime; settings.sound = b.dataset.chime !== "cisza";
+    settingsChanged(true); renderSound();
+    chime("focus", b.dataset.chime);
+  }));
+  $("#sChimeVol").addEventListener("input", e => { settings.chimeVol = Number(e.target.value); });
+  $("#sChimeVol").addEventListener("change", () => { settingsChanged(true); unlockAudio(); chime("focus"); });
   const openSheet = id => { const d = $(id); if (!d.open) d.showModal(); };
   $("#btnStats").addEventListener("click", () => { openSheet("#dlgStats"); renderStats(); });
   $("#btnToday").addEventListener("click", () => { openSheet("#dlgStats"); renderStats(); });
@@ -1179,18 +1350,12 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   $$(".preset").forEach(b => b.addEventListener("click", () => {
     Object.assign(settings, PRESETS[b.dataset.preset]); settingsChanged(true);
   }));
-  [["sAutoBreak", "autoBreak"], ["sAutoFocus", "autoFocus"], ["sSound", "sound"], ["sWake", "wake"]].forEach(([id, key]) =>
+  [["sAutoBreak", "autoBreak"], ["sAutoFocus", "autoFocus"], ["sWake", "wake"]].forEach(([id, key]) =>
     $("#" + id).addEventListener("change", e => { settings[key] = e.target.checked; settingsChanged(true); }));
   $("#sNoise").addEventListener("input", e => {
-    settings.noiseVol = Number(e.target.value);
-    if (noiseOn && noiseGain && AC) noiseGain.gain.setTargetAtTime(Math.max(0.0001, settings.noiseVol * 0.6), AC.currentTime, 0.1);
+    settings.noiseVol = Number(e.target.value); setAmbVolume();
   });
   $("#sNoise").addEventListener("change", () => settingsChanged(true));
-  $("#btnTest").addEventListener("click", () => {
-    unlockAudio();
-    if (!AC) { toast("Ta przeglądarka nie odtwarza dźwięku."); return; }
-    chime("focus");
-  });
   $$("#themeSeg [data-theme-opt]").forEach(b => b.addEventListener("click", () => {
     settings.theme = b.dataset.themeOpt; settingsChanged(true);
   }));
@@ -1209,7 +1374,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   });
 
   /* ─────────────── START ─────────────── */
-  applyLook(); render(); renderToday(); renderSettings();
+  applyLook(); render(); renderToday(); renderSettings(); renderSound();
   setInterval(tick, 250);
   // Nowa doba o północy: odśwież pasek „dziś”.
   let dayNow = dayKey(Date.now());
