@@ -1,0 +1,136 @@
+<!doctype html>
+<!-- Propozycje ikony Tempo. Każda to osobny <svg> 1024×1024 z id = nazwa wariantu;
+     render.mjs eksportuje wybrany do icon-180.png i icon-512.png. -->
+<html lang="pl"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+<style>
+body{margin:0;padding:28px;background:#1b1820;font-family:-apple-system,"Segoe UI",sans-serif;color:#eee}
+.grid{display:grid;grid-template-columns:repeat(4,300px);gap:28px}
+figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:12px}
+svg.icon{width:300px;height:300px;border-radius:22.5%;display:block;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+figcaption{font-size:20px;font-weight:600}
+figcaption small{display:block;font-size:14px;font-weight:400;color:#aaa;text-align:center;margin-top:2px}
+body.solo{padding:0;background:transparent}
+body.solo .grid{display:block}
+body.solo figure{display:none}
+body.solo figure.on{display:block}
+body.solo svg.icon{width:100vw;height:100vw;border-radius:0;box-shadow:none}
+body.solo figcaption{display:none}
+</style></head><body>
+<div class="grid">
+
+<!-- A · Szklana kula -->
+<figure id="f-orb"><svg class="icon" id="orb" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="a-bg" cx="50%" cy="35%" r="80%"><stop offset="0" stop-color="#2E1F45"/><stop offset="1" stop-color="#0D0B14"/></radialGradient>
+    <radialGradient id="a-g1"><stop offset="0" stop-color="#FF8FAB" stop-opacity=".7"/><stop offset="1" stop-color="#FF8FAB" stop-opacity="0"/></radialGradient>
+    <radialGradient id="a-g2"><stop offset="0" stop-color="#7B66E8" stop-opacity=".55"/><stop offset="1" stop-color="#7B66E8" stop-opacity="0"/></radialGradient>
+    <radialGradient id="a-orb" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#FFE3D3"/><stop offset=".3" stop-color="#FFB48A"/><stop offset=".65" stop-color="#FF7FA2"/><stop offset="1" stop-color="#8A3FA0"/></radialGradient>
+    <radialGradient id="a-low" cx="50%" cy="100%" r="55%"><stop offset="0" stop-color="#FFF1E8" stop-opacity=".7"/><stop offset="1" stop-color="#FFF1E8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="a-spec" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="a-rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".4"/></linearGradient>
+    <filter id="a-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="40"/></filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#a-bg)"/>
+  <circle cx="200" cy="180" r="480" fill="url(#a-g1)"/>
+  <circle cx="880" cy="860" r="460" fill="url(#a-g2)"/>
+  <circle cx="512" cy="540" r="330" fill="#FF8FAB" opacity=".45" filter="url(#a-blur)"/>
+  <circle cx="512" cy="512" r="310" fill="url(#a-orb)"/>
+  <circle cx="512" cy="512" r="310" fill="url(#a-low)"/>
+  <ellipse cx="420" cy="350" rx="170" ry="90" transform="rotate(-28 420 350)" fill="url(#a-spec)"/>
+  <circle cx="512" cy="512" r="310" fill="none" stroke="url(#a-rim)" stroke-width="8"/>
+  <circle cx="512" cy="512" r="400" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="6"/>
+  <circle cx="512" cy="112" r="22" fill="#FFF7FA"/>
+</svg><figcaption>A · Kula<small>czysta szklana kula w kolorach skupienia</small></figcaption></figure>
+
+<!-- B · Klin czasu (Time Timer) na jasnym szkle -->
+<figure id="f-wedge"><svg class="icon" id="wedge" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="b-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBE9F0"/><stop offset=".55" stop-color="#F1E6F7"/><stop offset="1" stop-color="#E3DCFA"/></linearGradient>
+    <radialGradient id="b-g1"><stop offset="0" stop-color="#FFB48A" stop-opacity=".55"/><stop offset="1" stop-color="#FFB48A" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b-g2"><stop offset="0" stop-color="#B3A6FF" stop-opacity=".6"/><stop offset="1" stop-color="#B3A6FF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="b-disc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity=".55"/></linearGradient>
+    <linearGradient id="b-wedge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF7FA2"/><stop offset="1" stop-color="#FFA36E"/></linearGradient>
+    <linearGradient id="b-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <filter id="b-sh" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="30"/></filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#b-bg)"/>
+  <circle cx="860" cy="170" r="420" fill="url(#b-g1)"/>
+  <circle cx="150" cy="900" r="460" fill="url(#b-g2)"/>
+  <circle cx="512" cy="560" r="350" fill="#6B4A8F" opacity=".22" filter="url(#b-sh)"/>
+  <circle cx="512" cy="512" r="350" fill="url(#b-disc)"/>
+  <!-- klin: od 12:00 zgodnie z zegarem do ~8:00 (2/3 czasu zostało) -->
+  <path d="M512 512 L512 202 A310 310 0 1 1 243.5 667 Z" fill="url(#b-wedge)"/>
+  <g id="b-ticks" stroke="#4A3A5C" stroke-linecap="round" opacity=".5"></g>
+  <circle cx="512" cy="512" r="350" fill="url(#b-gloss)"/>
+  <circle cx="512" cy="512" r="350" fill="none" stroke="#fff" stroke-width="8"/>
+  <circle cx="512" cy="512" r="46" fill="#fff"/>
+  <circle cx="512" cy="512" r="46" fill="none" stroke="#4A3A5C" stroke-opacity=".15" stroke-width="4"/>
+</svg><figcaption>B · Klin czasu<small>jak Time Timer: widać, ile zostało</small></figcaption></figure>
+
+<!-- C · Monogram T z kropką, jak napis TEMPO -->
+<figure id="f-mono"><svg class="icon" id="mono" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="c-bg" cx="30%" cy="20%" r="100%"><stop offset="0" stop-color="#4A2A55"/><stop offset=".6" stop-color="#1A1224"/><stop offset="1" stop-color="#0D0B14"/></radialGradient>
+    <radialGradient id="c-g1"><stop offset="0" stop-color="#FF8FAB" stop-opacity=".55"/><stop offset="1" stop-color="#FF8FAB" stop-opacity="0"/></radialGradient>
+    <radialGradient id="c-g2"><stop offset="0" stop-color="#FFB48A" stop-opacity=".45"/><stop offset="1" stop-color="#FFB48A" stop-opacity="0"/></radialGradient>
+    <linearGradient id="c-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity=".05"/></linearGradient>
+    <linearGradient id="c-rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".45" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+    <linearGradient id="c-ink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F3E3EE"/></linearGradient>
+    <radialGradient id="c-dot" cx="35%" cy="30%"><stop offset="0" stop-color="#FFE0D0"/><stop offset=".5" stop-color="#FF8FAB"/><stop offset="1" stop-color="#E5608A"/></radialGradient>
+    <filter id="c-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="26"/></filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#c-bg)"/>
+  <circle cx="820" cy="220" r="420" fill="url(#c-g1)"/>
+  <circle cx="230" cy="880" r="420" fill="url(#c-g2)"/>
+  <rect x="172" y="172" width="680" height="680" rx="190" fill="url(#c-glass)"/>
+  <rect x="172" y="172" width="680" height="680" rx="190" fill="none" stroke="url(#c-rim)" stroke-width="6"/>
+  <text x="488" y="700" text-anchor="middle" font-family="'Cormorant Garamond','Iowan Old Style',Georgia,serif" font-weight="600" font-size="560" fill="url(#c-ink)">T</text>
+  <circle cx="700" cy="330" r="70" fill="#FF8FAB" opacity=".6" filter="url(#c-blur)"/>
+  <circle cx="700" cy="330" r="46" fill="url(#c-dot)"/>
+</svg><figcaption>C · Monogram<small>„T” z kropką, jak napis TEMPO w aplikacji</small></figcaption></figure>
+
+<!-- D · Szklana klepsydra -->
+<figure id="f-glass"><svg class="icon" id="glass" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="d-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241838"/><stop offset="1" stop-color="#0D0B14"/></linearGradient>
+    <radialGradient id="d-g1"><stop offset="0" stop-color="#7FE3CF" stop-opacity=".4"/><stop offset="1" stop-color="#7FE3CF" stop-opacity="0"/></radialGradient>
+    <radialGradient id="d-g2"><stop offset="0" stop-color="#FF8FAB" stop-opacity=".55"/><stop offset="1" stop-color="#FF8FAB" stop-opacity="0"/></radialGradient>
+    <linearGradient id="d-sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB48A"/><stop offset="1" stop-color="#FF7FA2"/></linearGradient>
+    <linearGradient id="d-glass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity=".06"/><stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient>
+    <linearGradient id="d-cap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F5F0F8"/><stop offset="1" stop-color="#BFB3D0"/></linearGradient>
+    <clipPath id="d-clip"><path id="d-shape" d="M322 230h380c0 150-110 230-160 282 50 52 160 132 160 282H322c0-150 110-230 160-282-50-52-160-132-160-282z"/></clipPath>
+    <filter id="d-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="30"/></filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#d-bg)"/>
+  <circle cx="180" cy="200" r="440" fill="url(#d-g1)"/>
+  <circle cx="860" cy="860" r="460" fill="url(#d-g2)"/>
+  <ellipse cx="512" cy="760" rx="200" ry="70" fill="#FF8FAB" opacity=".5" filter="url(#d-blur)"/>
+  <g clip-path="url(#d-clip)">
+    <rect x="300" y="200" width="424" height="624" fill="url(#d-glass)"/>
+    <path d="M360 300h304c-30 70-100 120-152 170-52-50-122-100-152-170z" fill="url(#d-sand)" opacity=".95"/>
+    <rect x="504" y="470" width="16" height="250" fill="#FFB48A"/>
+    <path d="M330 794c20-80 90-116 182-116s162 36 182 116z" fill="url(#d-sand)"/>
+  </g>
+  <use href="#d-shape" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="10"/>
+  <path d="M360 270c10 90 70 150 120 196" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="12" stroke-linecap="round"/>
+  <rect x="282" y="196" width="460" height="48" rx="24" fill="url(#d-cap)"/>
+  <rect x="282" y="780" width="460" height="48" rx="24" fill="url(#d-cap)"/>
+</svg><figcaption>D · Klepsydra<small>szkło i „piasek” w kolorach faz</small></figcaption></figure>
+
+</div>
+<script>
+  // kreski minut na tarczy wariantu B
+  const g = document.getElementById("b-ticks"), ns = "http://www.w3.org/2000/svg";
+  for (let i = 0; i < 60; i += 5) {
+    const a = i / 60 * Math.PI * 2 - Math.PI / 2, major = i % 15 === 0, r1 = major ? 282 : 296, r2 = 320;
+    const l = document.createElementNS(ns, "line");
+    l.setAttribute("x1", 512 + r1 * Math.cos(a)); l.setAttribute("y1", 512 + r1 * Math.sin(a));
+    l.setAttribute("x2", 512 + r2 * Math.cos(a)); l.setAttribute("y2", 512 + r2 * Math.sin(a));
+    l.setAttribute("stroke-width", major ? 14 : 8); g.appendChild(l);
+  }
+  // ?solo=nazwa pokazuje sam wariant na pełnym ekranie (do eksportu PNG)
+  const solo = new URLSearchParams(location.search).get("solo");
+  if (solo) { document.body.classList.add("solo"); document.getElementById("f-" + solo).classList.add("on"); }
+</script>
+</body></html>

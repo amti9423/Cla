@@ -31,7 +31,7 @@ Licznik liczy od godziny zakończenia, a nie przez odejmowanie sekund. Dzięki t
 
 - `tempo.html`: źródło publikowane jako artefakt Claude (bez `<head>`, szkielet dokleja platforma). W artefakcie historia i ustawienia synchronizują się między urządzeniami przez bazę artefaktu.
 - `index.html`: samodzielna wersja z metatagami iOS i ikoną, generowana z `tempo.html`. Działa offline i zapisuje dane w przeglądarce. Nadaje się do GitHub Pages.
-- `icon.html` → `icon-180.png`, `icon-512.png`: ikona (szklany pomidor na tarczy czasu).
+- `icons/options.html` → `icon-180.png`, `icon-512.png`: ikona (szklana klepsydra). W pliku są też trzy inne warianty; `node icons/render.mjs orb|wedge|mono` przełącza.
 - `build.mjs`: `node build.mjs` odtwarza `index.html` po zmianach w `tempo.html`.
 
 ## Instalacja na iPhonie
