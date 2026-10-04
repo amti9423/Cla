@@ -41,6 +41,13 @@
   --line:rgba(255,255,255,.12); --line-2:rgba(255,255,255,.065);
   --shade:rgba(4,2,10,.38);
   --sheet:rgba(24,19,34,.74);
+  /* ── powierzchnie i wypełnienia ── */
+  --well:rgba(255,255,255,.055); --fill:rgba(255,255,255,.09); --fill-2:rgba(255,255,255,.18);
+  --track:rgba(255,255,255,.07); --bar:rgba(255,255,255,.2); --bar-0:rgba(255,255,255,.09);
+  --dash:rgba(255,255,255,.28); --grab:rgba(255,255,255,.22); --switch-off:rgba(255,255,255,.16);
+  --thumb-top:rgba(255,255,255,.22); --thumb-bot:rgba(255,255,255,.08); --thumb-hi:rgba(255,255,255,.45);
+  --scrim:rgba(8,6,14,.42); --toast-bg:rgba(28,22,38,.82); --knob:#F5F0F8; --on-accent:#1A1222;
+  --blob:.42;
   /* ── typografia ── */
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
   --round:ui-rounded,"SF Pro Rounded","Nunito",-apple-system,system-ui,sans-serif;
@@ -48,12 +55,35 @@
   /* ── ruch ── */
   --spring:cubic-bezier(.34,1.56,.64,1); --ease:cubic-bezier(.2,.7,.3,1);
 }
+/* ── JASNY MOTYW: mleczne szkło na pudrowym liliowym tle. Kolory faz głębsze, żeby trzymały kontrast. ── */
+:root[data-look="light"]{
+  color-scheme:light;
+  --night:#F6F1F7; --night-2:#ECE2F1;
+  --ink:#241B2E; --ink-2:#564B63; --muted:#857A93;
+  --rose:#EE6188; --apricot:#F4985F;
+  --sea:#22B89E;  --sky:#4A9EEC;
+  --lilac:#8676F2; --orchid:#D06FC8;
+  --deep:#C7B6FF;
+  --glass-top:rgba(255,255,255,.78); --glass-bot:rgba(255,255,255,.42);
+  --rim:rgba(255,255,255,.75); --hi:rgba(255,255,255,.95);
+  --line:rgba(36,27,46,.10); --line-2:rgba(36,27,46,.07);
+  --shade:rgba(70,45,100,.13);
+  --sheet:rgba(250,246,252,.80);
+  --well:rgba(255,255,255,.58); --fill:rgba(36,27,46,.06); --fill-2:rgba(36,27,46,.12);
+  --track:rgba(36,27,46,.07); --bar:rgba(36,27,46,.16); --bar-0:rgba(36,27,46,.07);
+  --dash:rgba(36,27,46,.25); --grab:rgba(36,27,46,.18); --switch-off:rgba(36,27,46,.14);
+  --thumb-top:rgba(255,255,255,.98); --thumb-bot:rgba(255,255,255,.78); --thumb-hi:rgba(255,255,255,1);
+  --scrim:rgba(70,45,100,.18); --toast-bg:rgba(255,255,255,.86); --knob:#FFFFFF; --on-accent:#1A1222;
+  --blob:.5;
+}
 /* Kolor fazy płynnie przechodzi między trybami — dlatego jest zarejestrowaną właściwością. */
 @property --p1{syntax:"<color>";inherits:true;initial-value:#FF8FAB}
 @property --p2{syntax:"<color>";inherits:true;initial-value:#FFB48A}
 :root{--p1:var(--rose);--p2:var(--apricot);transition:--p1 1.1s var(--ease),--p2 1.1s var(--ease)}
 :root[data-mode="short"]{--p1:var(--sea);--p2:var(--sky)}
 :root[data-mode="long"]{--p1:var(--lilac);--p2:var(--orchid)}
+/* Zmiana motywu też przechodzi płynnie. */
+body,.glass,dialog.sheet,.list,.kpis,.chart,.preset{transition:background-color .5s var(--ease),color .5s var(--ease)}
 
 *{box-sizing:border-box}
 html{background:var(--night);height:100%;-webkit-text-size-adjust:100%}
@@ -71,7 +101,7 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .ambient{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:
   radial-gradient(120% 80% at 50% 120%, var(--night-2), transparent 60%), var(--night)}
 .ambient i{position:absolute;border-radius:50%;will-change:transform}
-.ambient .b1{width:95vmax;height:95vmax;left:-38vmax;top:-42vmax;opacity:.42;
+.ambient .b1{width:95vmax;height:95vmax;left:-38vmax;top:-42vmax;opacity:var(--blob);
   background:radial-gradient(closest-side,var(--p1),transparent);animation:drift1 34s ease-in-out infinite alternate}
 .ambient .b2{width:85vmax;height:85vmax;right:-40vmax;bottom:-36vmax;opacity:.34;
   background:radial-gradient(closest-side,var(--p2),transparent);animation:drift2 41s ease-in-out infinite alternate}
@@ -107,14 +137,14 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   transition:transform .35s var(--spring),color .2s}
 .icon-btn:active{transform:scale(.9)}
 .icon-btn svg.i{width:20px;height:20px}
-.icon-btn[aria-pressed="true"]{color:var(--night);background:linear-gradient(150deg,var(--p1),var(--p2));
+.icon-btn[aria-pressed="true"]{color:var(--on-accent);background:linear-gradient(150deg,var(--p1),var(--p2));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 6px 22px -4px color-mix(in srgb,var(--p1) 70%,transparent)}
 
 /* ═══ PRZEŁĄCZNIK TRYBU — szklana soczewka przesuwa się pod etykietą ═══ */
 .seg{display:grid;grid-template-columns:repeat(3,1fr);padding:4px;border-radius:999px}
 .seg-thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/3);border-radius:999px;
-  background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.08));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 4px 14px rgba(0,0,0,.25);
+  background:linear-gradient(160deg,var(--thumb-top),var(--thumb-bot));
+  box-shadow:inset 0 1px 0 var(--thumb-hi),0 4px 14px var(--shade);
   transform:translateX(calc(var(--i,0) * 100%));transition:transform .55s var(--spring)}
 .seg button{position:relative;z-index:1;min-height:38px;border-radius:999px;font-size:clamp(12px,3.4vw,14px);font-weight:600;
   color:var(--muted);transition:color .25s;white-space:nowrap}
@@ -131,14 +161,14 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .dial.pulse .halo{animation:pulse 1.4s var(--ease)}
 @keyframes pulse{0%{transform:scale(.9);opacity:.6}35%{transform:scale(1.22);opacity:1}100%{transform:scale(1);opacity:.6}}
 .ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.ring .track{fill:none;stroke:rgba(255,255,255,.07);stroke-width:14}
+.ring .track{fill:none;stroke:var(--track);stroke-width:14}
 .ring .arc{fill:none;stroke:url(#arcGrad);stroke-width:14;stroke-linecap:round;stroke-dasharray:892.2;
   transform:rotate(-90deg);transform-origin:160px 160px;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--p1) 70%,transparent))}
 .ring .s1{stop-color:var(--p1)} .ring .s2{stop-color:var(--p2)}
 .ring .tick{stroke:var(--ink);stroke-width:1.4;stroke-linecap:round;opacity:.14;transition:opacity .4s}
 .ring .tick.major{stroke-width:2.2}
 .ring .tick.on{opacity:.5}
-.ring .knob{fill:var(--ink);filter:drop-shadow(0 0 6px var(--p1))}
+.ring .knob{fill:var(--knob);filter:drop-shadow(0 0 6px var(--p1))}
 .ring .knob-g{transform-origin:160px 160px}
 .face{position:absolute;inset:17%;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center}
 .face .lab{color:var(--ink-2);font-size:max(9.5px,3.1cqi)}
@@ -156,7 +186,7 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 
 /* ═══ RUNDY ═══ */
 .rounds{display:flex;align-items:center;justify-content:center;gap:8px;min-height:18px}
-.rounds i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);transition:all .4s var(--spring)}
+.rounds i{width:9px;height:9px;border-radius:50%;background:var(--fill);border:1px solid var(--line);transition:all .4s var(--spring)}
 .rounds i.done{background:linear-gradient(150deg,var(--p1),var(--p2));border-color:transparent;box-shadow:0 0 8px color-mix(in srgb,var(--p1) 60%,transparent)}
 .rounds i.now{border-color:var(--p1);transform:scale(1.25)}
 .rounds .lab{margin-left:6px}
@@ -165,7 +195,7 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .controls{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;justify-items:center;gap:20px}
 .ctl{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);transition:transform .35s var(--spring)}
 .ctl:active{transform:scale(.9)}
-.play{position:relative;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;color:#1A1222;
+.play{position:relative;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;color:var(--on-accent);
   background:linear-gradient(150deg,color-mix(in srgb,var(--p1) 88%,white),var(--p2));
   box-shadow:inset 0 1.5px 0 rgba(255,255,255,.65),inset 0 -6px 14px rgba(0,0,0,.12),0 14px 38px -8px color-mix(in srgb,var(--p1) 75%,transparent);
   transition:transform .4s var(--spring)}
@@ -182,7 +212,7 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .today-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .today-row b{font-family:var(--round);font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}
 .today-row span{color:var(--ink-2);font-size:13px}
-.meter{height:5px;border-radius:9px;background:rgba(255,255,255,.08);overflow:hidden}
+.meter{height:5px;border-radius:9px;background:var(--fill);overflow:hidden}
 .meter i{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,var(--p1),var(--p2));transition:width .8s var(--ease)}
 
 /* ═══ ARKUSZE (statystyki, ustawienia, koniec fazy) ═══ */
@@ -190,22 +220,22 @@ dialog.sheet{border:0;padding:0;color:var(--ink);width:min(100%,520px);max-width
   border-radius:30px 30px 0 0;overflow:auto;overscroll-behavior:contain;
   background:linear-gradient(170deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 40%),var(--sheet);
   -webkit-backdrop-filter:blur(34px) saturate(180%);backdrop-filter:blur(34px) saturate(180%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 -10px 50px rgba(0,0,0,.45)}
+  box-shadow:inset 0 1px 0 var(--hi),0 -10px 50px var(--shade)}
 dialog.sheet[open]{animation:sheetIn .5s var(--spring)}
-dialog.sheet::backdrop{background:rgba(8,6,14,.42);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+dialog.sheet::backdrop{background:var(--scrim);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
 @keyframes sheetIn{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 @media(min-width:700px){dialog.sheet{margin:auto;border-radius:30px;max-height:86vh}}
 .sheet-in{display:flex;flex-direction:column;gap:18px;padding:10px 20px calc(24px + env(safe-area-inset-bottom,0px))}
-.grabber{width:38px;height:5px;border-radius:9px;background:rgba(255,255,255,.22);margin:0 auto}
+.grabber{width:38px;height:5px;border-radius:9px;background:var(--grab);margin:0 auto}
 .sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .sheet-head h2{font-family:var(--serif);font-weight:400;font-size:28px;letter-spacing:-.01em;text-wrap:balance}
-.x{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);background:rgba(255,255,255,.08)}
+.x{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);background:var(--fill)}
 .x svg.i{width:16px;height:16px}
 
 /* grupy jak w Ustawieniach iOS */
 .group{display:flex;flex-direction:column;gap:7px}
 .group>.lab{padding-left:4px}
-.list{border-radius:20px;overflow:hidden;background:rgba(255,255,255,.055);border:1px solid var(--line-2)}
+.list{border-radius:20px;overflow:hidden;background:var(--well);border:1px solid var(--line-2)}
 .row{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:56px;padding:9px 16px;border-top:1px solid var(--line-2)}
 .row:first-child{border-top:0}
 .row b{display:block;font-weight:600;font-size:15px}
@@ -213,30 +243,33 @@ dialog.sheet::backdrop{background:rgba(8,6,14,.42);-webkit-backdrop-filter:blur(
 .row>span:first-child{min-width:0}
 
 .stepper{display:flex;align-items:center;gap:4px;flex:0 0 auto}
-.stepper button{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.09);font-size:19px;line-height:1;color:var(--ink);display:grid;place-items:center}
-.stepper button:active{background:rgba(255,255,255,.18)}
+.stepper button{width:34px;height:34px;border-radius:50%;background:var(--fill);font-size:19px;line-height:1;color:var(--ink);display:grid;place-items:center}
+.stepper button:active{background:var(--fill-2)}
 .stepper button[disabled]{opacity:.3;cursor:default}
 .stepper output{min-width:58px;text-align:center;font-family:var(--round);font-size:17px;font-weight:500;font-variant-numeric:tabular-nums}
 .stepper output small{display:inline;font-size:12px;color:var(--muted);margin-left:2px}
 
 .switch{appearance:none;-webkit-appearance:none;flex:0 0 auto;width:51px;height:31px;border-radius:99px;margin:0;position:relative;cursor:pointer;
-  background:rgba(255,255,255,.16);transition:background .25s}
+  background:var(--switch-off);transition:background .25s}
 .switch::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;
   box-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .35s var(--spring)}
 .switch:checked{background:linear-gradient(150deg,var(--p1),var(--p2))}
 .switch:checked::after{transform:translateX(20px)}
 
 .range{width:140px;max-width:42vw;accent-color:var(--p1)}
+.mini-seg{display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--fill);flex:0 0 auto}
+.mini-seg button{min-height:32px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink-2);transition:background .25s,color .25s}
+.mini-seg button[aria-pressed="true"]{color:var(--ink);background:linear-gradient(160deg,var(--thumb-top),var(--thumb-bot));box-shadow:inset 0 1px 0 var(--thumb-hi),0 2px 8px var(--shade)}
 
 .presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .preset{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px;border-radius:18px;text-align:left;
-  background:rgba(255,255,255,.055);border:1px solid var(--line-2);transition:transform .35s var(--spring),border-color .2s}
+  background:var(--well);border:1px solid var(--line-2);transition:transform .35s var(--spring),border-color .2s}
 .preset:active{transform:scale(.96)}
 .preset b{font-size:14px;font-weight:600}
 .preset span{font-family:var(--round);font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .preset small{font-size:11.5px;color:var(--muted);line-height:1.3}
 .preset[aria-pressed="true"]{border-color:color-mix(in srgb,var(--p1) 70%,transparent);
-  background:linear-gradient(160deg,color-mix(in srgb,var(--p1) 22%,transparent),rgba(255,255,255,.04))}
+  background:linear-gradient(160deg,color-mix(in srgb,var(--p1) 22%,transparent),var(--well))}
 @media(max-width:380px){.presets{grid-template-columns:1fr}}
 
 .note{font-size:13px;color:var(--ink-2);line-height:1.5;padding:12px 16px}
@@ -247,19 +280,19 @@ dialog.sheet::backdrop{background:rgba(8,6,14,.42);-webkit-backdrop-filter:blur(
 .sync[data-state="error"]::before{background:var(--rose)}
 
 /* statystyki */
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);border-radius:20px;overflow:hidden;background:rgba(255,255,255,.055);border:1px solid var(--line-2)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);border-radius:20px;overflow:hidden;background:var(--well);border:1px solid var(--line-2)}
 .kpis>div{padding:14px 12px;border-left:1px solid var(--line-2);min-width:0}
 .kpis>div:first-child{border-left:0}
 .kpis .v{font-family:var(--round);font-size:clamp(20px,6vw,26px);font-weight:500;line-height:1.1;margin-top:6px;font-variant-numeric:tabular-nums}
 .kpis .v small{font-size:13px;color:var(--muted);font-weight:500}
-.chart{padding:16px 14px 10px;border-radius:20px;background:rgba(255,255,255,.055);border:1px solid var(--line-2)}
+.chart{padding:16px 14px 10px;border-radius:20px;background:var(--well);border:1px solid var(--line-2)}
 .plot{position:relative;height:150px;display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end}
 .col{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}
 .col .v{font-size:11px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
-.col i{display:block;width:100%;max-width:30px;border-radius:9px 9px 4px 4px;background:rgba(255,255,255,.2);min-height:3px;transition:height .7s var(--ease)}
-.col.zero i{background:rgba(255,255,255,.09)}
+.col i{display:block;width:100%;max-width:30px;border-radius:9px 9px 4px 4px;background:var(--bar);min-height:3px;transition:height .7s var(--ease)}
+.col.zero i{background:var(--bar-0)}
 .col.now i{background:linear-gradient(180deg,var(--p1),var(--p2));box-shadow:0 0 14px color-mix(in srgb,var(--p1) 55%,transparent)}
-.goal-line{position:absolute;left:0;right:0;border-top:1px dashed rgba(255,255,255,.28);pointer-events:none;z-index:1}
+.goal-line{position:absolute;left:0;right:0;border-top:1px dashed var(--dash);pointer-events:none;z-index:1}
 .goal-line span{position:absolute;right:0;top:-17px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:8px;text-align:center}
 .days span{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
@@ -273,7 +306,7 @@ dialog.sheet::backdrop{background:rgba(8,6,14,.42);-webkit-backdrop-filter:blur(
 .sess .n.none{color:var(--muted)}
 .sess .m{font-family:var(--round);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
 .sess .del{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
-.sess .del:active{background:rgba(255,255,255,.1)}
+.sess .del:active{background:var(--fill)}
 .sess .del svg.i{width:15px;height:15px}
 .empty{padding:22px 16px;text-align:center;color:var(--ink-2);font-size:14px}
 .empty b{display:block;font-family:var(--serif);font-weight:400;font-size:19px;color:var(--ink);margin-bottom:4px}
@@ -281,29 +314,29 @@ dialog.sheet::backdrop{background:rgba(8,6,14,.42);-webkit-backdrop-filter:blur(
 /* koniec fazy */
 dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(calc(100% - 32px),420px)}
 .done .sheet-in{padding:28px 22px 22px;gap:14px;align-items:stretch}
-.done-mark{width:64px;height:64px;margin:0 auto 4px;border-radius:50%;display:grid;place-items:center;color:#1A1222;
+.done-mark{width:64px;height:64px;margin:0 auto 4px;border-radius:50%;display:grid;place-items:center;color:var(--on-accent);
   background:linear-gradient(150deg,color-mix(in srgb,var(--p1) 88%,white),var(--p2));box-shadow:0 10px 34px -6px color-mix(in srgb,var(--p1) 80%,transparent)}
 .done-mark svg.i{width:28px;height:28px;stroke-width:2.4}
 .done h2{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.1;text-wrap:balance}
 .done .sub{color:var(--ink-2);font-size:14px}
-.done .tip{font-size:14px;color:var(--ink);padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid var(--line-2)}
+.done .tip{font-size:14px;color:var(--ink);padding:12px 14px;border-radius:16px;background:var(--well);border:1px solid var(--line-2)}
 .done .tip .lab{display:block;margin-bottom:3px}
 .btn{min-height:52px;border-radius:999px;font-weight:600;font-size:15px;padding:0 20px;transition:transform .35s var(--spring)}
 .btn:active{transform:scale(.97)}
-.btn.primary{color:#1A1222;background:linear-gradient(150deg,color-mix(in srgb,var(--p1) 88%,white),var(--p2));
+.btn.primary{color:var(--on-accent);background:linear-gradient(150deg,color-mix(in srgb,var(--p1) 88%,white),var(--p2));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 28px -8px color-mix(in srgb,var(--p1) 80%,transparent)}
-.btn.soft{background:rgba(255,255,255,.1);border:1px solid var(--line-2)}
+.btn.soft{background:var(--fill);border:1px solid var(--line-2)}
 .btn.plain{min-height:40px;color:var(--ink-2);font-weight:500}
 
 /* komunikat */
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:100;transform:translate(-50%,14px);opacity:0;
   display:flex;align-items:center;gap:12px;max-width:calc(100% - 32px);padding:10px 10px 10px 18px;border-radius:999px;font-size:14px;font-weight:500;
   pointer-events:none;transition:transform .45s var(--spring),opacity .25s;margin:0;inset-inline-end:auto;top:auto;color:var(--ink);
-  background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.06)),rgba(28,22,38,.82);border:1px solid var(--rim);
+  background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.06)),var(--toast-bg);border:1px solid var(--rim);
   -webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:inset 0 1px 0 var(--hi),0 10px 30px var(--shade)}
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
 .toast .msg{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.toast button{flex:0 0 auto;min-height:32px;padding:0 14px;border-radius:999px;font-size:13px;font-weight:700;color:#1A1222;background:linear-gradient(150deg,var(--p1),var(--p2))}
+.toast button{flex:0 0 auto;min-height:32px;padding:0 14px;border-radius:999px;font-size:13px;font-weight:700;color:var(--on-accent);background:linear-gradient(150deg,var(--p1),var(--p2))}
 .toast:not(.has-act){padding-right:18px}
 
 @media(max-height:720px){
@@ -317,6 +350,18 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   :root{transition:none}
 }
 </style>
+
+<script>
+/* Motyw ustawiamy przed pierwszym malowaniem, żeby nie mignął ciemny ekran. */
+(function () {
+  var t = "auto";
+  try { t = (JSON.parse(localStorage.getItem("tempo:v1:settings") || "{}").theme) || "auto"; } catch (_) {}
+  var r = document.documentElement, host = r.getAttribute("data-theme");
+  if (t === "auto") t = host === "light" || host === "dark" ? host
+    : (window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  r.setAttribute("data-look", t);
+})();
+</script>
 
 <div class="ambient" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
 
@@ -465,9 +510,22 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
     </div>
 
     <div class="group">
+      <span class="lab">Wygląd</span>
+      <div class="list">
+        <div class="row"><span><b>Motyw</b><small>Auto podąża za ustawieniem iPhone'a</small></span>
+          <div class="mini-seg" id="themeSeg" role="group" aria-label="Motyw">
+            <button type="button" data-theme-opt="auto" aria-pressed="true">Auto</button>
+            <button type="button" data-theme-opt="light" aria-pressed="false">Jasny</button>
+            <button type="button" data-theme-opt="dark" aria-pressed="false">Ciemny</button>
+          </div></div>
+      </div>
+    </div>
+
+    <div class="group">
       <span class="lab">Dźwięk i ekran</span>
       <div class="list">
-        <label class="row" for="sSound"><span><b>Dzwonek na koniec fazy</b><small>wyciszony iPhone wycisza też dzwonek</small></span><input type="checkbox" class="switch" id="sSound"></label>
+        <label class="row" for="sSound"><span><b>Dzwonek na koniec fazy</b><small>gra też w trybie cichym (iOS 17+)</small></span><input type="checkbox" class="switch" id="sSound"></label>
+        <div class="row"><span><b>Sprawdź dzwonek</b><small>jeśli nic nie słychać, podgłośnij przyciskami z boku</small></span><button type="button" class="btn soft" id="btnTest" style="min-height:38px;font-size:14px">Zagraj</button></div>
         <label class="row" for="sWake"><span><b>Ekran nie gaśnie</b><small>w trakcie sesji, żeby dzwonek zawsze zagrał</small></span><input type="checkbox" class="switch" id="sWake"></label>
         <label class="row" for="sNoise"><span><b>Głośność szumu</b><small>szum brązowy, przycisk z falą u góry</small></span><input type="range" class="range" id="sNoise" min="0" max="1" step="0.05"></label>
       </div>
@@ -510,7 +568,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   const MODES = { focus: "Skupienie", short: "Przerwa", long: "Długa przerwa" };
   const DOW = ["nd", "pn", "wt", "śr", "cz", "pt", "sb"];
   const DEFAULTS = { focus: 25, short: 5, long: 15, every: 4, goal: 8, autoBreak: false, autoFocus: false,
-                     sound: true, wake: true, noiseVol: 0.5, updatedAt: 0 };
+                     sound: true, wake: true, noiseVol: 0.5, theme: "auto", updatedAt: 0 };
   const PRESETS = { classic: { focus: 25, short: 5, long: 15 }, deep: { focus: 50, short: 10, long: 30 }, gentle: { focus: 15, short: 3, long: 10 } };
   // [min, max, krok]
   const LIMITS = { focus: [5, 90, 5], short: [1, 30, 1], long: [5, 45, 5], every: [2, 8, 1], goal: [1, 16, 1] };
@@ -547,23 +605,53 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   const saveTimer = () => lsSet(K.timer, T);
   const remaining = () => (T.status === "running" ? Math.max(0, T.endAt - Date.now()) : T.left);
 
+  /* ─────────────── MOTYW ───────────────
+     Auto: najpierw wybór motywu w Claude (atrybut data-theme), potem ustawienie systemu. */
+  const mqLight = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
+  function applyLook() {
+    let look = settings.theme || "auto";
+    if (look === "auto") {
+      const host = root.getAttribute("data-theme");
+      look = host === "light" || host === "dark" ? host : (mqLight && mqLight.matches ? "light" : "dark");
+    }
+    root.dataset.look = look;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", look === "light" ? "#F6F1F7" : "#0D0B14");
+  }
+  if (mqLight) {
+    if (mqLight.addEventListener) mqLight.addEventListener("change", applyLook);
+    else if (mqLight.addListener) mqLight.addListener(applyLook);
+  }
+  if (window.MutationObserver) new MutationObserver(applyLook).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+
   /* ─────────────── DŹWIĘK ───────────────
-     iOS odblokowuje dźwięk dopiero po geście — robimy to przy pierwszym Start. */
+     iOS odblokowuje dźwięk dopiero po geście — robimy to przy Start i każdym stuknięciu.
+     Domyślnie Safari traktuje Web Audio jak dźwięk tła, który wycisza przełącznik
+     trybu cichego. Kategoria „playback” (iOS 17+) sprawia, że dzwonek gra jak w aplikacji. */
   let AC = null, master = null, noiseSrc = null, noiseGain = null, noiseOn = false;
+  function playbackSession() {
+    try { if (navigator.audioSession && navigator.audioSession.type !== "playback") navigator.audioSession.type = "playback"; } catch (_) {}
+  }
   function ctx() {
     if (!AC) {
       const C = window.AudioContext || window.webkitAudioContext;
       if (!C) return null;
+      playbackSession();
       try { AC = new C(); master = AC.createGain(); master.gain.value = 0.9; master.connect(AC.destination); }
       catch (_) { AC = null; return null; }
     }
-    if (AC.state === "suspended") AC.resume().catch(() => {});
+    // iOS zostawia kontekst w stanie „interrupted” po zablokowaniu ekranu albo telefonie — budzimy każdy stan poza „running”.
+    if (AC.state !== "running") AC.resume().catch(() => {});
     return AC;
   }
   function unlockAudio() {
+    playbackSession();
     const a = ctx(); if (!a) return;
     try { const b = a.createBuffer(1, 1, 22050), s = a.createBufferSource(); s.buffer = b; s.connect(a.destination); s.start(0); } catch (_) {}
   }
+  // Każdy gest użytkownika to okazja, żeby obudzić uśpiony dźwięk przed końcem fazy.
+  const wakeAudio = () => { if (AC && AC.state !== "running") { playbackSession(); AC.resume().catch(() => {}); } };
+  ["pointerdown", "touchend", "keydown"].forEach(ev => document.addEventListener(ev, wakeAudio, { passive: true, capture: true }));
   // Miękki dzwonek: ton podstawowy plus dwa niecałkowite alikwoty, jak w małej misie.
   function bell(a, f, t, vol) {
     [[1, vol, 2.2], [2.76, vol * 0.16, 0.9], [5.4, vol * 0.05, 0.5]].forEach(([m, v, len]) => {
@@ -577,9 +665,10 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   }
   function chime(from) {
     const a = ctx(); if (!a) return;
-    const t0 = a.currentTime + 0.05;
     const seq = from === "focus" ? [784, 988, 1319] : [1319, 988, 784];   // w górę = przerwa, w dół = do pracy
-    seq.forEach((f, i) => bell(a, f, t0 + i * 0.24, 0.22));
+    const play = () => { const t0 = a.currentTime + 0.05; seq.forEach((f, i) => bell(a, f, t0 + i * 0.24, 0.22)); };
+    // Uśpiony kontekst ma zamrożony zegar: najpierw go budzimy, dopiero potem planujemy dźwięk.
+    if (a.state === "running") play(); else a.resume().then(play, play);
   }
   // Szum brązowy z pętlą bez trzasku: koniec bufora przenika się z początkiem.
   function brownBuffer(a) {
@@ -1016,6 +1105,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
     $("#sSound").checked = !!settings.sound;
     $("#sWake").checked = !!settings.wake;
     $("#sNoise").value = String(settings.noiseVol);
+    $$("#themeSeg [data-theme-opt]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themeOpt === (settings.theme || "auto"))));
   }
 
   /* ─────────────── USTAWIENIA ─────────────── */
@@ -1026,6 +1116,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
     if (T.round > settings.every) { T.round = settings.every; saveTimer(); }
     if (noiseOn && noiseGain && AC) noiseGain.gain.setTargetAtTime(Math.max(0.0001, settings.noiseVol * 0.6), AC.currentTime, 0.2);
     if (!settings.wake) awake(false); else if (T.status === "running") awake(true);
+    applyLook();
     render(); renderSettings(); renderToday(); renderStats();
   }
   function step(key, dir) {
@@ -1095,6 +1186,14 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
     if (noiseOn && noiseGain && AC) noiseGain.gain.setTargetAtTime(Math.max(0.0001, settings.noiseVol * 0.6), AC.currentTime, 0.1);
   });
   $("#sNoise").addEventListener("change", () => settingsChanged(true));
+  $("#btnTest").addEventListener("click", () => {
+    unlockAudio();
+    if (!AC) { toast("Ta przeglądarka nie odtwarza dźwięku."); return; }
+    chime("focus");
+  });
+  $$("#themeSeg [data-theme-opt]").forEach(b => b.addEventListener("click", () => {
+    settings.theme = b.dataset.themeOpt; settingsChanged(true);
+  }));
   $("#intent").addEventListener("input", e => { T.label = e.target.value; saveTimer(); });
   $("#intent").addEventListener("keydown", e => { if (e.key === "Enter") e.target.blur(); });
   document.addEventListener("keydown", e => {
@@ -1110,7 +1209,7 @@ dialog.sheet.done{text-align:center;margin:auto;border-radius:30px;width:min(cal
   });
 
   /* ─────────────── START ─────────────── */
-  render(); renderToday(); renderSettings();
+  applyLook(); render(); renderToday(); renderSettings();
   setInterval(tick, 250);
   // Nowa doba o północy: odśwież pasek „dziś”.
   let dayNow = dayKey(Date.now());

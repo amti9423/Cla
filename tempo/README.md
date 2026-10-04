@@ -37,4 +37,6 @@ Licznik liczy od godziny zakończenia, a nie przez odejmowanie sekund. Dzięki t
 
 Otwórz link w Safari, stuknij **Udostępnij**, potem **Do ekranu początkowego**.
 
-Ograniczenia przeglądarki na iOS: przy zablokowanym ekranie strona nie gra dźwięku (dlatego ekran nie gaśnie w trakcie sesji), a przełącznik wyciszenia wycisza też dzwonek.
+Motyw: Auto (jak iPhone), Jasny albo Ciemny, w Ustawieniach → Wygląd.
+
+Dźwięk na iOS: Tempo prosi Safari o kategorię audio „playback” (iOS 17+), więc dzwonek gra także w trybie cichym. Przy zablokowanym ekranie strona nie gra dźwięku, dlatego ekran nie gaśnie w trakcie sesji. W Ustawieniach jest przycisk „Sprawdź dzwonek”.
